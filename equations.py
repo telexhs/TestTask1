@@ -1,6 +1,8 @@
 import math
 
 def solve(A:int, B:int, C:int):
+    if A == 0:
+        raise ValueError("Коэфицент A не должен быть нулем")
     D = discriminant(A, B, C) # Это дискриминант
     if D < 0:
         return None
