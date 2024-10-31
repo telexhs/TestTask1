@@ -1,7 +1,7 @@
 import math
 
 def solve(A:int, B:int, C:int):
-    D = discriminant(A, B, C)
+    D = discriminant(A, B, C) # Это дискриминант
     if D < 0:
         return None
     x1 =  (-B + math.sqrt(D)) / (2 * A)
