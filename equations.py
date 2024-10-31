@@ -1,18 +1,18 @@
 import math
 
-def solve(A:int, B:int, C:int):
-    if A == 0:
+def solve(a:int, b:int, c:int):
+    if a == 0:
         raise ValueError("Коэфицент A не должен быть нулем")
-    D = discriminant(A, B, C) # Это дискриминант
+    D = discriminant(a, b, c) # Это дискриминант
     if D < 0:
         return None
     elif D == 0:
-        x = -B / (2 * A)
+        x = -b / (2 * a)
         return [x]
-    x1 =  (-B + math.sqrt(D)) / (2 * A)
-    x2 =  (-B - math.sqrt(D)) / (2 * A)
+    x1 =  (-b + math.sqrt(D)) / (2 * a)
+    x2 =  (-b - math.sqrt(D)) / (2 * a)
     return [x1, x2]
 
 
-def discriminant(A:int, B:int, C:int):
-    return pow(B, 2) - 4 * A * C
+def discriminant(a:int, b:int, c:int):
+    return pow(b, 2) - 4 * a * c

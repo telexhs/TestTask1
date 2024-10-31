@@ -48,7 +48,7 @@ class TestFindRoots(unittest.TestCase):
         self.assertEqual(answer[0], 2)
         self.assertEqual(answer[1], 0)
 
-    def solve_discriminant(self):
+    def test_solve_discriminant(self):
         """Тест с проверкой дискриминанта"""
         a, b, c = 2, 5, 2
         answer = discriminant(a, b, c)
