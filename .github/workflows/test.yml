@@ -38,6 +38,7 @@ jobs:
 
   sonarcloud:
     runs-on: ubuntu-latest
+    needs: runt-test
     steps:
       - uses: actions/checkout@v4
         with:
@@ -46,3 +47,4 @@ jobs:
         uses: sonarsource/sonarcloud-github-action@v3.1.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_COVERAGE_REPORT_PATH: coverage.xml
