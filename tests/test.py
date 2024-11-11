@@ -1,6 +1,7 @@
 from equations import solve, discriminant
 import unittest
 import math
+import TSP, TSP_calulate
 
 
 class TestFindRoots(unittest.TestCase):
@@ -29,6 +30,7 @@ class TestFindRoots(unittest.TestCase):
         self.assertIsNone(answer)
 
     def test_float_parametrs(self):
+        """Тест с вещественными числами"""
         a, b, c = 1.5, 6.8, 3
         answer = solve(a, b, c)
         self.assertAlmostEqual(answer[0], -0.495289, delta=0.0001)
@@ -69,7 +71,18 @@ class TestFindRoots(unittest.TestCase):
         answer = discriminant(a, b, c)
         self.assertEqual(answer, -7)
         
-
+class Test_TSP_positive(unittest.TestCase):
+    def test_solve_TSP(self):
+        """Тест на общее решение задачи"""
+        table1 = [[None, 5, 6, 8, 5, 8],
+                  [5, None, 4, 6, 6, 3],
+                  [4, 3, None, 1, 9, 2],
+                  [3, 4, 7, None, 5, 4],
+                  [5, 4, 8, 8, None, 2],
+                  [1, 6, 0, 3, 7, None]]
+        path, const = TSP.kommi(table1)
+        self.assertEqual(const, 16)
+        self.assertEqual(path, [1, 5, 2, 6, 3, 4])
 
 if __name__ == '__main__':
     unittest.main()
