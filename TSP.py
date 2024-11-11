@@ -15,6 +15,22 @@ def best_solution(tables):
     return min_table
 
 
+def generate_path(solution):
+    flag = True
+    path = []
+    start = 1
+    path.append(start)
+    while flag:
+        for line in solution:
+            if line[0] + 1 == start:
+                if line[1] + 1 in path:
+                    flag = False
+                    break
+                path.append(line[1] + 1)
+                start = line[1] + 1
+    return path
+
+
 def kommi(matrix):
     if not isinstance(matrix, list):
         raise TypeError("На вход должен подаваться list")
@@ -47,4 +63,5 @@ def kommi(matrix):
             solution.append(tableOut)
         if not continue_flag:
             sol = tableIn
-    return sol.solution, sol.const
+    path = generate_path(sol.solution)
+    return path, sol.const
