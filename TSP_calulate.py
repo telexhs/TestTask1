@@ -2,7 +2,7 @@ import copy
 
 
 class Table:
-    def __init__(self, matrix, parent, const, iIgnored, jIgnored, solution):
+    def __init__(self, matrix=None, parent=None, const=0, iIgnored=[], jIgnored=[], solution=[]):
         self.matrix = matrix
         self.parent = parent
         self.const = const
@@ -29,31 +29,32 @@ def is_avaliable(table, i=None, j=None):
 def calculate_const(table):
     Ui = []
     Vj = []
-    for i in range(0, 6):
+    length =  len(table.matrix)
+    for i in range(0, length):
         minI = 1000
         if not is_avaliable(table, i):
             continue
-        for j in range(0, 6):
+        for j in range(0, length):
             if not is_avaliable(table, i, j):
                 continue
             minI = min(minI, table.matrix[i][j])
 
-        for j in range(0, 6):
+        for j in range(0, length):
             if not is_avaliable(table, i, j):
                 continue
             table.matrix[i][j] = table.matrix[i][j] - minI
         Ui.append(minI)
 
-    for j in range(0, 6):
+    for j in range(0, length):
         minJ = 1000
         if not is_avaliable(table, i=None, j=j):
             continue
-        for i in range(0, 6):
+        for i in range(0, length):
             if not is_avaliable(table, i, j):
                 continue
             minJ = min(minJ, table.matrix[i][j])
 
-        for i in range(0, 6):
+        for i in range(0, length):
             if not is_avaliable(table, i, j):
                 continue
             table.matrix[i][j] = table.matrix[i][j] - minJ
@@ -85,27 +86,28 @@ def fix_Hamilton_circuit(table, last_solution):
 
 def calculate_table(table):
     calculate_const(table)
+    length =  len(table.matrix)
     continue_flag = True
     max_NPi = 100
     max_NPj = 100
     max_NullPower = -1
-    for i in range(0, 6):
+    for i in range(0, length):
         if not is_avaliable(table, i):
             continue
-        for j in range(0, 6):
+        for j in range(0, length):
             if not is_avaliable(table, i, j):
                 continue
             if table.matrix[i][j] == 0:
                 minJ = 100
                 minI = 100
                 fix = True
-                for NPj in range(0, 6):
+                for NPj in range(0, length):
                     if not is_avaliable(table, i, NPj) or NPj == j:
                         continue
                     minJ = min(minJ, table.matrix[i][NPj])
                     fix = False
 
-                for NPi in range(0, 6):
+                for NPi in range(0, length):
                     if not is_avaliable(table, NPi, j) or NPi == i:
                         continue
                     minI = min(minI, table.matrix[NPi][j])
@@ -132,8 +134,8 @@ def calculate_table(table):
         in_jIgnored_list = table.jIgnored.copy()
         in_solution_list = table.solution.copy()
         in_matrix = copy.deepcopy(table.matrix)
-        for last_i in range(0, 6):
-            for last_j in range(0, 6):
+        for last_i in range(0, length):
+            for last_j in range(0, length):
                 if is_avaliable(table, last_i, last_j):
 
                     in_iIgnored_list.append(last_i)

@@ -10,7 +10,7 @@ def best_solution(tables):
     
     min_table = TSP_calulate.Table([[]], None, 10000, [], [], [])
     for table in tables:
-        if table.const <= min_table.const and len(table.solution) >= len(min_table.solution):
+        if table.const <= min_table.const:
             min_table = table
     return min_table
 
@@ -34,8 +34,10 @@ def generate_path(solution):
 def kommi(matrix):
     if not isinstance(matrix, list):
         raise TypeError("На вход должен подаваться list")
-
-    testMatrix = np.array(matrix)
+    try:
+        testMatrix = np.array(matrix)
+    except:
+        raise ValueError("Неправильный вид матрицы")
     if testMatrix.ndim != 2:
         raise ValueError("Неправильная размерность входной матрицы")
     
