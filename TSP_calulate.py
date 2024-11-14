@@ -2,9 +2,8 @@ import copy
 
 
 class Table:
-    def __init__(self, matrix=None, parent=None, const=0, iIgnored=[], jIgnored=[], solution=[]):
+    def __init__(self, matrix=None, const=0, iIgnored=[], jIgnored=[], solution=[]):
         self.matrix = matrix
-        self.parent = parent
         self.const = const
         self.iIgnored = iIgnored
         self.jIgnored = jIgnored
@@ -65,6 +64,7 @@ def calculate_const(table):
     for val in Vj:
         const = const + val
     table.const = table.const + const
+    return table
 
 
 def fix_Hamilton_circuit(table, last_solution):
@@ -85,7 +85,7 @@ def fix_Hamilton_circuit(table, last_solution):
 
 
 def calculate_table(table):
-    calculate_const(table)
+    table = calculate_const(table)
     length =  len(table.matrix)
     continue_flag = True
     max_NPi = 100
@@ -104,7 +104,10 @@ def calculate_table(table):
                 for NPj in range(0, length):
                     if not is_avaliable(table, i, NPj) or NPj == j:
                         continue
-                    minJ = min(minJ, table.matrix[i][NPj])
+                    try:
+                        minJ = min(minJ, table.matrix[i][NPj])
+                    except:
+                        print(f"ij ={table.matrix[i][j]}, iNPj ={table.matrix[i][NPj]}; i- {i}, j- {j}; i- {i}, NPj- {NPj}")
                     fix = False
 
                 for NPi in range(0, length):
@@ -114,23 +117,12 @@ def calculate_table(table):
                     fix = False
 
                 if not fix:
-                    if minJ==100:
-                        if max_NullPower <= minI:
-                            max_NullPower = minI
-                            max_NPi = i
-                            max_NPj = j
-                    elif minI==100:
-                        if max_NullPower <= minJ:
-                            max_NullPower = minJ
-                            max_NPi = i
-                            max_NPj = j
-                    else:
-                        if max_NullPower <= minJ + minI:
-                            max_NullPower = minI + minJ
-                            max_NPi = i
-                            max_NPj = j
+                    if max_NullPower <= minJ + minI:
+                        max_NullPower = minI + minJ
+                        max_NPi = i
+                        max_NPj = j
     if fix:
-        in_iIgnored_list = table.iIgnored.copy()
+        in_iIgnored_list = table.iIgnored.copy()  
         in_jIgnored_list = table.jIgnored.copy()
         in_solution_list = table.solution.copy()
         in_matrix = copy.deepcopy(table.matrix)
@@ -144,10 +136,10 @@ def calculate_table(table):
 
                     in_solution_list.append((last_i, last_j))
 
-                    tableIn = Table(in_matrix, table, table.const, in_iIgnored_list, in_jIgnored_list, in_solution_list)
+                    tableIn = Table(in_matrix, table.const, in_iIgnored_list, in_jIgnored_list, in_solution_list)
 
                     fix_Hamilton_circuit(tableIn, (last_i, last_j))
-                    calculate_const(tableIn)
+                    #tableIn = calculate_const(tableIn)
 
                     continue_flag = False
                     tableOut = None
@@ -164,10 +156,10 @@ def calculate_table(table):
 
         in_matrix = copy.deepcopy(table.matrix)
 
-        tableIn = Table(in_matrix, table, table.const, in_iIgnored_list, in_jIgnored_list, in_solution_list)
+        tableIn = Table(in_matrix, table.const, in_iIgnored_list, in_jIgnored_list, in_solution_list)
 
         fix_Hamilton_circuit(tableIn, (max_NPi, max_NPj))
-        calculate_const(tableIn)
+        #tableIn = calculate_const(tableIn)
 
     # Вариант с исключённой дугой
         out_iIgnored_list = table.iIgnored.copy()
@@ -175,8 +167,8 @@ def calculate_table(table):
         out_solution_list = table.solution.copy()
         out_matrix = copy.deepcopy(table.matrix)
 
-        tableOut = Table(out_matrix, table, table.const, out_iIgnored_list, out_jIgnored_list, out_solution_list)
+        tableOut = Table(out_matrix, table.const, out_iIgnored_list, out_jIgnored_list, out_solution_list)
         tableOut.matrix[max_NPi][max_NPj] = None
-        calculate_const(tableOut)
+        #tableOut = calculate_const(tableOut)
 
     return tableIn, tableOut, continue_flag

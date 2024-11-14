@@ -8,7 +8,7 @@ def best_solution(tables):
     if len(tables ) == 0:
         raise ValueError("Список не должен быть пуст")
     
-    min_table = TSP_calulate.Table([[]], None, 10000, [], [], [])
+    min_table = TSP_calulate.Table([[]], 10000, [], [], [])
     for table in tables:
         if table.const <= min_table.const:
             min_table = table
@@ -50,7 +50,7 @@ def kommi(matrix):
         if element is not None:
             raise ValueError("Диагональные элементы должны быть None")
 
-    table = TSP_calulate.Table(matrix, None, 0, [], [], [])
+    table = TSP_calulate.Table(matrix, 0, [], [], [])
     solution = []
     solution.append(table)
     continue_flag = True
@@ -60,8 +60,11 @@ def kommi(matrix):
         table = best_solution(solution)
         solution.remove(table)
         tableIn, tableOut, continue_flag = TSP_calulate.calculate_table(table)
+        tableIn = TSP_calulate.calculate_const(tableIn)
+        
         solution.append(tableIn)
         if tableOut is not None:
+            tableOut = TSP_calulate.calculate_const(tableOut)
             solution.append(tableOut)
         if not continue_flag:
             sol = tableIn
