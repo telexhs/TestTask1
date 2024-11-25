@@ -1,5 +1,6 @@
 import equations
 import TSP
+import numpy as np
 
 
 #print('Введите коэфиценты уравнения Ax^2 + Bx+ C = 0')
@@ -25,7 +26,27 @@ table2 =   [[None, 7, 16, 21, 2, 17],
             [13, 10, 27, None, 33, 12],
             [9, 2, 19, 14, None, 51],
             [42, 17, 5, 9, 23, None]]
-path, const = TSP.kommi(table2)
+
+print("Введите матрицу")
+def myInt(element):
+    if element == "None":
+        return None
+    try:
+        return int(element)
+    except:
+        raise TypeError("Неравильный тип на входе")
+matrix = []
+tableInput = list(map(myInt, input().replace(",", "").split()))
+matrix.append(tableInput)
+for i in range(1, len(tableInput)):
+    inp = list(map(myInt, input().replace(",", "").split()))
+    matrix.append(inp)    
+
+#tableInput1 = [int(l) if l!="None" else None for l in input().split() ]
+
+#input(matrix)
+#print(tableInput1)
+path, const = TSP.kommi(matrix)
 
 print(f"Путь - {path}")
 print(f"Константа - {const}")
