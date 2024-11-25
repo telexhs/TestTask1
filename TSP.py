@@ -49,7 +49,12 @@ def kommi(matrix):
     for element in testDiag:
         if element is not None:
             raise ValueError("Диагональные элементы должны быть None")
-
+        
+    testN = testMatrix != None
+    testNegative = testMatrix[testN] < 0
+    if np.any(testNegative):
+        raise ValueError("Элементы матрицы должны быть >= 0")
+    
     table = TSP_calulate.Table(matrix, 0, [], [], [])
     solution = []
     solution.append(table)

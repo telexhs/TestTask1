@@ -120,7 +120,6 @@ class Test_TSP_positive(unittest.TestCase):
                 return False
             return True
         mock_is_avaliable.side_effect = test_is_avaliable 
-        """Тест рассчета константы"""
         matrix =   [[None, 10, 15, 20],
                     [10, None, 35, 25],
                     [15, 35, None, 30],
@@ -130,7 +129,7 @@ class Test_TSP_positive(unittest.TestCase):
         self.assertEqual(table.const, 70)
 
     def test_fix_Hamilton_circuit1(self):
-        """Тест с проверкой функции исправление гамильтонова цикла без других решений"""
+        """Тест с проверкой функции исправления гамильтонова цикла без других решений"""
         matrix1 = [[None, 10, 15, 20],
                     [10, None, 35, 25],
                     [15, 35, None, 30],
@@ -145,7 +144,7 @@ class Test_TSP_positive(unittest.TestCase):
         self.assertEqual(table.matrix, matrix2)
 
     def test_fix_Hamilton_circuit2(self):
-        """Тест с проверкой функции исправление гамильтонова цикла с другими решениями"""
+        """Тест с проверкой функции исправления гамильтонова цикла с другими решениями"""
         matrix1 = [[None, 10, None, 20],
                     [10, None, 35, 25],
                     [None, 35, None, 30],
@@ -268,6 +267,17 @@ class Test_TSP_negative(unittest.TestCase):
                   [5, 4, 8, 8, None, 2],
                   [1, 6, 0, 3, 7, None]]
         
+        with self.assertRaises(ValueError):
+            path, const = TSP.kommi(table1)
+
+    def test_negative_matrix(self):
+        """Отрицательная матрица на входе"""
+        table1 = [[None, 5, -6, 8, 5, 8],
+                  [5, None, 4, -6, 6, 3],
+                  [4, 3, None, -1, 9, 2],
+                  [3, -4, 7, None, 5, 4],
+                  [5, 4, 8, 8, None, -2],
+                  [1, 6, 0, -3, 7, None]]
         with self.assertRaises(ValueError):
             path, const = TSP.kommi(table1)
 
